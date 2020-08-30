@@ -1,0 +1,77 @@
+# Ignore files in repository working files
+
+# Ignore "junk" and other files often used for work
+junk
+
+# Ignore compiled Python files, in case Python scripts are used.
+*.py[cod]
+
+# Ignore Python stack dump files when a crash occurs
+*.stackdump
+
+# Ignore log files
+*.log
+
+# vim editor files
+
+*.swp
+*.swo
+
+# Microsoft temporary files
+*.tmp
+~$*
+
+# Ignore file extension used as temporary for .bat, etc. so email attachment works
+*.xxx
+
+# Ignore working files, in particular dynamically-created files created for InfoMapper.
+# Putting these items here avoids the need for many separate .gitignore files,
+# but need to pay attention to conventions.
+#
+#
+# For web, just ignore dynamically-created files
+# - all other content is version-controlled
+/web/data-maps/*
+/web/data-ts/*
+
+# ======================================================
+# InfoMapper Basins menu
+# ======================================================
+
+# InfoMapperBasins/InfoMapper-Basins
+/workflow/InfoMapperBasins/InfoMapper-Basins/downloads/*
+!/workflow/InfoMapperBasins/InfoMapper-Basins/downloads/README.md
+/workflow/InfoMapperBasins/InfoMapper-Basins/layers/*
+!/workflow/InfoMapperBasins/InfoMapper-Basins/layers/README.md
+!/workflow/InfoMapperBasins/InfoMapper-Basins/layers/*.csv
+!/workflow/InfoMapperBasins/InfoMapper-Basins/layers/*.md
+!/workflow/InfoMapperBasins/InfoMapper-Basins/layers/*doc
+# Dynamic map configurations
+/workflow/InfoMapperBasins/InfoMapper-Basins/*.json
+
+# ======================================================
+# Current Conditions menu
+# ======================================================
+
+# CurrentConditions/Environment-Wildfires
+/workflow/CurrentConditions/Environment-Wildfires/downloads/*
+!/workflow/CurrentConditions/Environment-Wildfires/downloads/README.md
+/workflow/CurrentConditions/Environment-Wildfires/layers/*
+!/workflow/CurrentConditions/Environment-Wildfires/layers/README.md
+!/workflow/CurrentConditions/Environment-Wildfires/layers/*.csv
+!/workflow/CurrentConditions/Environment-Wildfires/layers/*.md
+!/workflow/CurrentConditions/Environment-Wildfires/layers/*doc
+# Dynamic map configurations
+/workflow/CurrentConditions/Environment-Wildfires/*.json
+
+# ======================================================
+# Seasonal Outlook menu
+# ======================================================
+
+# ======================================================
+# Future Planning menu
+# ======================================================
+
+# ======================================================
+# Resources menu
+# ======================================================

@@ -1,0 +1,80 @@
+{
+  "title": "US River Basin Information",
+  "homePage": "/content-pages/home.md",
+  "favicon": "/img/owf-favicon-32x32.ico",
+  "googleAnalyticsTrackingId": "UA-135465513-1",
+  "version": "0.1.0 (2020-08-29)",
+  "mainMenu": [
+    {
+      "id": "InfoMapperEntities",
+      "name": "InfoMapper Basins",
+      "align": "left",
+      "menus": [
+        {
+          "id": "infomapper-basins",
+          "name": "Poudre River Basin, Colorado",
+          "action": "externalLink",
+          "url": "http://poudre.openwaterfoundation.org/latest/",
+          "xname": "InfoMapper Basins",
+          "xaction": "displayMap",
+          "xmapProject" : "data-maps/InfoMapperBasins/InfoMapper-Basins/infomapper-basins-map.json"
+        }
+      ]
+    },
+    {
+      "id": "CurrentConditions",
+      "name": "Current Conditions",
+      "align": "left",
+      "menus" : [
+        {
+          "id": "current-wildfires",
+          "name": "Environment - Wildfires",
+          "action": "displayMap",
+          "mapProject": "data-maps/CurrentConditions/Environment-Wildfires/wildfires-map.json"
+        }
+      ]
+    },
+    {
+      "id": "Resources",
+      "name": "Resources",
+      "align": "left",
+      "menus" : [
+        {
+          "id": "about-the-project",
+          "name": "About the Project",
+          "action": "contentPage",
+          "align": "right",
+          "markdownFile": "content-pages/about-the-project.md"
+        },
+        {
+          "id": "infomapper-doc",
+          "name": "InfoMapper Documentation",
+          "action": "externalLink",
+          "align": "right",
+          "url": "http://software.openwaterfoundation.org/infomapper/latest/doc-user/"
+        },
+        {
+          "id": "contact",
+          "name": "Contact",
+          "action": "contentPage",
+          "align": "right",
+          "markdownFile": "content-pages/contact.md"
+        },
+        {
+          "id": "release-notes",
+          "name": "Release Notes",
+          "action": "contentPage",
+          "align": "right",
+          "markdownFile": "content-pages/release-notes.md"
+        },
+        {
+          "id": "report-issue",
+          "name": "Report an Issue",
+          "action": "contentPage",
+          "align": "right",
+          "markdownFile": "content-pages/report-issue.md"
+        }
+      ]
+    }
+  ]
+}
