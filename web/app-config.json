@@ -40,11 +40,11 @@
       "align": "left",
       "menus" : [
         {
-          "id": "about-the-project",
-          "name": "About the Project",
+          "id": "about",
+          "name": "About this Website",
           "action": "contentPage",
           "align": "right",
-          "markdownFile": "content-pages/about-the-project.md"
+          "markdownFile": "content-pages/about.md"
         },
         {
           "id": "infomapper-doc",
@@ -56,9 +56,24 @@
         {
           "id": "contact",
           "name": "Contact",
+          "separatorBefore": true,
           "action": "contentPage",
           "align": "right",
           "markdownFile": "content-pages/contact.md"
+        },
+        {
+          "id": "credits",
+          "name": "Credits",
+          "action": "contentPage",
+          "align": "right",
+          "markdownFile": "content-pages/credits.md"
+        },
+        {
+          "id": "license",
+          "name": "License",
+          "action": "contentPage",
+          "align": "right",
+          "markdownFile": "content-pages/license.md"
         },
         {
           "id": "release-notes",
@@ -69,10 +84,18 @@
         },
         {
           "id": "report-issue",
-          "name": "Report an Issue",
+          "name": "Reporting an Issue",
           "action": "contentPage",
           "align": "right",
           "markdownFile": "content-pages/report-issue.md"
+        },
+        {
+          "id": "owf",
+          "name": "Open Water Foundation",
+          "action": "externalLink",
+          "separatorBefore": true,
+          "align": "right",
+          "url": "http://openwaterfoundation.org"
         }
       ]
     }
