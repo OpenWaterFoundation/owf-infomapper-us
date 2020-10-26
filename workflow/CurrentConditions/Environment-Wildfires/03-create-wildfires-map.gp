@@ -71,6 +71,8 @@ AddGeoLayerViewGroupToGeoMap(GeoLayerViewGroupID="ContinentalDivideGroup",Name="
 ReadGeoLayerFromGeoJSON(InputFile="https://raw.githubusercontent.com/OpenWaterFoundation/owf-data-us-continental-divide/master/data/continental-divide-us.geojson",GeoLayerID="ContinentalDivideLayer",Name="Continental Divide",Description="Continental divide based on Hydrologic Unit Code basins")
 AddGeoLayerViewToGeoMap(GeoLayerID="ContinentalDivideLayer",GeoLayerViewID="ContinentalDivideLayerView",Name="Continental Divide",Description="Continental divide based on Hydrologic Unit Code basins",InsertPosition="Top")
 SetGeoLayerViewSingleSymbol(GeoLayerViewID="ContinentalDivideLayerView",Name="Continental divide symbol",Description="Continental divide line in wide brown.",Properties="color:#663300,opacity:0.5,fillColor:#663300,fillOpacity:0.5,weight:5")
+SetGeoLayerViewEventHandler(GeoLayerViewID="ContinentalDivideLayerView",EventType="hover",Name="Hover event",Description="Hover event configuration",Properties="eventConfigPath:layers/continental-divide-event-config.json")
+SetGeoLayerViewEventHandler(GeoLayerViewID="ContinentalDivideLayerView",EventType="click",Name="Click event",Description="Click event configuration",Properties="eventConfigPath:layers/continental-divide-event-config.json")
 # = = = = = = = = = =
 # Wildfire Perimeters:  read layer and add to a layer view group.
 # GeoLayerViewGroupID: WildfiresGroup
@@ -98,6 +100,8 @@ AddGeoLayerViewGroupToGeoMap(GeoLayerViewGroupID="WildfiresGroup",Name="US Wildf
 ReadGeoLayerFromGeoJSON(InputFile="https://opendata.arcgis.com/datasets/5da472c6d27b4b67970acc7b5044c862_0.geojson",GeoLayerID="WildfirePerimetersLayer",Name="Colorado Wildfire Perimiters",Description="Colorado wildfire perimeters web service")
 AddGeoLayerViewToGeoMap(GeoLayerID="WildfirePerimetersLayer",GeoLayerViewID="WildfirePerimetersLayerView",Name="US Wildfire Perimeters",Description="US wildfire perimeters from the National Interagency Fire Center",Properties="docPath:layers/wildfire-perimeters.md")
 SetGeoLayerViewSingleSymbol(GeoLayerViewID="WildfirePerimetersLayerView",Name="WildfirePerimetersSymbol",Description="Wildfire Perimeters symbol",Properties="color:#ff0000,fillColor:#ff0000,fillOpacity:0.3")
+SetGeoLayerViewEventHandler(GeoLayerViewID="WildfirePerimetersLayerView",EventType="hover",Name="Hover event",Description="Hover event configuration",Properties="eventConfigPath:layers/wildfire-perimeters-event-config.json")
+SetGeoLayerViewEventHandler(GeoLayerViewID="WildfirePerimetersLayerView",EventType="click",Name="Click event",Description="Click event configuration",Properties="eventConfigPath:layers/wildfire-perimeters-event-config.json")
 # = = = = = = = = = =
 # Write the map project file and copy layers to the location needed by the web application.
 # - follow InfoMapper conventions
@@ -108,5 +112,9 @@ CopyFile(SourceFile="wildfires-map.md",DestinationFile="${MapFolder}/wildfires-m
 # -----
 # Layers
 #
+CopyFile(SourceFile="layers/continental-divide-event-config.json",DestinationFile="${MapFolder}/layers/continental-divide-event-config.json")
+#
 #CopyFile(SourceFile="layers/wildfire-perimeters-classify-wildfire-perimeters.csv",DestinationFile="${MapFolder}/layers/wildfire-perimeters-classify-wildfire-perimeters.csv")
 CopyFile(SourceFile="layers/wildfire-perimeters.md",DestinationFile="${MapFolder}/layers/wildfire-perimeters.md")
+CopyFile(SourceFile="layers/wildfire-perimeters-event-config.json",DestinationFile="${MapFolder}/layers/wildfire-perimeters-event-config.json")
+#CopyFile(SourceFile="layers/wildfire-perimeters-archive-event-config.json",DestinationFile="${MapFolder}/layers/wildfire-perimeters-archive-event-config.json")

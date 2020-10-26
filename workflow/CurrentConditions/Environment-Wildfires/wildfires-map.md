@@ -1,11 +1,11 @@
 # Map: US Wildfires
 
-* Background
+* Overview
 * Layer Groups
 
 --------------
 
-## Background
+## Overview
 
 The US Wildfires map provides information about wildfires in the United States.
 
@@ -26,4 +26,5 @@ The following layer groups are included in this map.
 | **Layer Group** | **Description** |
 | -- | -- |
 | US Wildfires | US wildfire burn areas. |
+| Continental Divide | Continental divide. |
 | Background Layers | Background layers that provide a frame of reference. |
