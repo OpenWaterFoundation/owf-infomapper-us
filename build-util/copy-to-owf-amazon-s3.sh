@@ -1,16 +1,16 @@
 #!/bin/sh
 (set -o igncr) 2>/dev/null && set -o igncr; # this comment is required
-# The above line ensures that the script can be run on Cygwin/Linux even with Windows CRNL
+# The above line ensures that the script can be run on Cygwin/Linux even with Windows CRNL.
 #
-# Copy the staged Info Mapper website to the rivers.openwaterfoundation.org website
+# Copy the staged Info Mapper website to the rivers.openwaterfoundation.org website:
 # - replace all the files on the web with local files
 # - must specify Amazon profile as argument to the script
 # - the script determines the version from the code and optionally uploads to "latest" version
 # - tested with Git Bash
 
-# Supporting functions, alphabetized
+# Supporting functions, alphabetized.
 
-# Build the distribution in the staging area
+# Build the distribution in the staging area.
 buildDist() {
   # First build the site so that the "dist" folder contains current content.
   #
@@ -24,7 +24,7 @@ buildDist() {
   #
   # See options:  https://angular.io/cli/build
 
-  # Ways to handle the href path
+  # Ways to handle the href path:
   # - TODO smalers 2020-04-20 can add this to command line parameters if necessary
   # - "period" works locally in "dist" but not when pushed to the cloud
   # - "path" 
@@ -48,11 +48,11 @@ buildDist() {
 
   optimizationArg=""
   if [ "$doOptimization" = "no" ]; then
-    # Turn off optimization
+    # Turn off optimization.
     optimizationArg="--optimization=false"
   fi
 
-  # Run the ng build
+  # Run the ng build:
   # - use the command line from 'copy-to-owf-amazon-s3.bat', which was used more recently
   # - this should be found in the Windows PATH, for example C:\Users\user\AppData\Roaming\npm\ng
   logInfo "Start running:  ng build --prod=true --aot=true --baseHref=${ngBuildHrefOpt} --extractCss=true --namedChunks=false --outputHashing=all --sourceMap=false ${optimizationArg}"
@@ -66,7 +66,7 @@ buildDist() {
     exit ${exitCode}
   fi
 
-  # Fix the distribution index.html file as per:  
+  # Fix the distribution index.html file as per:
   #   Problem:   https://github.com/angular/angular/issues/30835
   #   Solution:  https://stackoverflow.com/questions/56606789/angular-8-ng-build-throwing-mime-error-with-cordova
   indexFile="${infoMapperDistAppFolder}/index.html"
@@ -80,18 +80,18 @@ buildDist() {
   else
     logError "index.html file does not exist: ${indexFile}"
     logError "Maybe the budget needs to be increased?"
-    # This tends to cause major issues so exit
+    # This tends to cause major issues so exit.
     exit 1
   fi
 }
 
-# Check to make sure the Angular version is as expected
+# Check to make sure the Angular version is as expected:
 # - TODO smalers 2020-04-20 Need to implement
 checkAngularVersion() {
   logWarning "Checking Angular version is not implemented.  Continuing."
 }
 
-# Check input
+# Check input:
 # - make sure that the Amazon profile was specified
 # - call this before doing the upload but don't need before then
 checkInput() {
@@ -103,11 +103,11 @@ checkInput() {
   fi
 }
 
-# Determine the operating system that is running the script
+# Determine the operating system that is running the script:
 # - mainly care whether Cygwin or MINGW (Git Bash)
 checkOperatingSystem() {
   if [ ! -z "${operatingSystem}" ]; then
-    # Have already checked operating system so return
+    # Have already checked operating system so return.
     return
   fi
   operatingSystem="unknown"
@@ -125,14 +125,14 @@ checkOperatingSystem() {
   esac
 }
 
-# Echo to stderr
+# Echo to stderr:
 # - if necessary, quote the string to be printed
 # - this function is called to print various message types
 echoStderr() {
   echo "$@" 1>&2
 }
 
-# Get the user's login.
+# Get the user's login:
 # - Git Bash apparently does not set $USER environment variable, not an issue on Cygwin
 # - Set USER as script variable only if environment variable is not already set
 # - See: https://unix.stackexchange.com/questions/76354/who-sets-user-and-username-environment-variables
@@ -145,10 +145,10 @@ getUserLogin() {
   if [ -z "$USER" ]; then
     USER=$(logname)
   fi
-  # Else - not critical since used for temporary files
+  # Else - not critical since used for temporary files.
 }
 
-# Get the InfoMapper version and US River Basins version.
+# Get the InfoMapper version and US River Basins version:
 # - the version is in the 'web/app-config.json' file in format:  "version": "0.7.0.dev (2020-04-24)"
 # - the Info Mapper software version in 'assets/version.json' with format similar to above
 getVersion() {
@@ -160,7 +160,7 @@ getVersion() {
     exit 1
   fi
   version=$(grep '"version":' ${versionFile} | cut -d ":" -f 2 | cut -d "(" -f 1 | tr -d '"' | tr -d ' ' | tr -d ',')
-  # InfoMapper version
+  # InfoMapper version.
   versionFile="${infoMapperMainFolder}/src/assets/version.json"
   if [ ! -f "${versionFile}" ]; then
     logError "InfoMapper version file does not exist: ${versionFile}"
@@ -190,23 +190,23 @@ logWarning() {
    echoStderr "[WARNING] $@"
 }
 
-# Parse the command parameters
+# Parse the command parameters:
 # - use the getopt command line program so long options can be handled
 parseCommandLine() {
-  # Single character options
+  # Single character options.
   optstring="hv"
-  # Long options
+  # Long options.
   optstringLong="aws-profile::,dryrun,help,nobuild,noupload,nooptimization,upload-assets,upload-datamaps,version"
-  # Parse the options using getopt command
+  # Parse the options using getopt command.
   GETOPT_OUT=$(getopt --options $optstring --longoptions $optstringLong -- "$@")
   exitCode=$?
   if [ $exitCode -ne 0 ]; then
-    # Error parsing the parameters such as unrecognized parameter
+    # Error parsing the parameters such as unrecognized parameter.
     echoStderr ""
     printUsage
     exit 1
   fi
-  # The following constructs the command by concatenating arguments
+  # The following constructs the command by concatenating arguments.
   eval set -- "$GETOPT_OUT"
   # Loop over the options
   while true; do
@@ -214,11 +214,11 @@ parseCommandLine() {
     case "$1" in
       --aws-profile) # --aws-profile=profile  Specify the AWS profile (use default)
         case "$2" in
-          "") # Nothing specified so error
+          "") # Nothing specified so error.
             logError "--aws-profile=profile is missing profile name"
             exit 1
             ;;
-          *) # profile has been specified
+          *) # profile has been specified.
             awsProfile=$2
             shift 2
             ;;
@@ -229,44 +229,44 @@ parseCommandLine() {
         dryrun="--dryrun"
         shift 1
         ;;
-      -h|--help) # -h or --help  Print the program usage
+      -h|--help) # -h or --help  Print the program usage.
         printUsage
         exit 0
         ;;
-      --nobuild) # --nobuild  Indicate to not build to staging area
+      --nobuild) # --nobuild  Indicate to not build to staging area.
         logInfo "--nobuild detected - will not build to 'dist' folder"
         doBuild="no"
         shift 1
         ;;
-      --nooptimization) # --nooptimization  Control 'ng build --optimization'
+      --nooptimization) # --nooptimization  Control 'ng build --optimization'.
         logInfo "--nooptimization detected - will set 'ng build --optimization=false"
         doOptimization="no"
         shift 1
         ;;
-      --noupload) # --noupload  Indicate to create staging area dist but not upload
+      --noupload) # --noupload  Indicate to create staging area dist but not upload.
         logInfo "--noupload detected - will not upload 'dist' folder"
         doUpload="no"
         shift 1
         ;;
-      --upload-assets) # --upload-assets  Indicate to only upload assets
+      --upload-assets) # --upload-assets  Indicate to only upload assets.
         logInfo "--upload-assets detected - will upload only 'assets' folder"
         uploadOnlyAssets="yes"
         shift 1
         ;;
-      --upload-datamaps) # --upload-datamaps  Indicate to only upload data-maps
+      --upload-datamaps) # --upload-datamaps  Indicate to only upload data-maps.
         logInfo "--upload-datamaps detected - will upload only 'assets/app/data-maps' folder"
         uploadOnlyDataMaps="yes"
         shift 1
         ;;
-      -v|--version) # -v or --version  Print the program version
+      -v|--version) # -v or --version  Print the program version.
         printVersion
         exit 0
         ;;
-      --) # No more arguments
+      --) # No more arguments.
         shift
         break
         ;;
-      *) # Unknown option
+      *) # Unknown option.
         logError ""
         logError "Invalid option $1." >&2
         printUsage
@@ -276,11 +276,11 @@ parseCommandLine() {
   done
 }
 
-# Print the program usage to stderr.
+# Print the program usage to stderr:
 # - calling code must exit with appropriate code
 printUsage() {
   echoStderr ""
-  echoStderr "Usage:  $programName --aws-profile=profile"
+  echoStderr "Usage:  ${programName} --aws-profile=profile"
   echoStderr ""
   echoStderr "Copy the US River Basins Information application files to the Amazon S3 static website folder(s),"
   echoStderr "using the AWS S3 sync capabilities."
@@ -300,14 +300,14 @@ printUsage() {
   echoStderr ""
 }
 
-# Print the script version and copyright/license notices to stderr.
+# Print the script version and copyright/license notices to stderr:
 # - calling code must exit with appropriate code
 printVersion() {
   echoStderr ""
   echoStderr "${programName} version ${programVersion} ${programVersionDate}"
   echoStderr ""
   echoStderr "US River Basins Information"
-  echoStderr "Copyright 2017-2020 Open Water Foundation."
+  echoStderr "Copyright 2017-2024 Open Water Foundation."
   echoStderr ""
   echoStderr "License GPLv3+:  GNU GPL version 3 or later"
   echoStderr ""
@@ -318,7 +318,45 @@ printVersion() {
   echoStderr ""
 }
 
-# Sync the Angular application files to S3
+# Set the AWS executable:
+# - handle different operating systems
+# - for AWS CLI V2, can call an executable
+# - for AWS CLI V1, have to deal with Python
+# - once set, use ${awsExe} as the command to run, followed by necessary command parameters
+setAwsExe() {
+  if [ "${operatingSystem}" = "mingw" ]; then
+    # "mingw" is Git Bash:
+    # - the following should work for V2
+    # - if "aws" is in path, use it
+    awsExe=$(command -v aws)
+    if [ -n "${awsExe}" ]; then
+      # Found aws in the PATH.
+      awsExe="aws"
+    else
+      # Might be older V1.
+      # Figure out the Python installation path.
+      pythonExePath=$(py -c "import sys; print(sys.executable)")
+      if [ -n "${pythonExePath}" ]; then
+        # Path will be something like:  C:\Users\sam\AppData\Local\Programs\Python\Python37\python.exe
+        # - so strip off the exe and substitute Scripts
+        # - convert the path to posix first
+        pythonExePathPosix="/$(echo "${pythonExePath}" | sed 's/\\/\//g' | sed 's/://')"
+        pythonScriptsFolder="$(dirname "${pythonExePathPosix}")/Scripts"
+        echo "${pythonScriptsFolder}"
+        awsExe="${pythonScriptsFolder}/aws"
+      else
+        echo "[ERROR] Unable to find Python installation location to find 'aws' script"
+        echo "[ERROR] Make sure Python 3.x is installed on Windows so 'py' is available in PATH"
+        exit 1
+      fi
+    fi
+  else
+    # For other Linux, including Cygwin, just try to run.
+    awsExe="aws"
+  fi
+}
+
+# Sync the Angular application files to S3:
 # - figures out the location of the 'aws' script for Cygwin and MinGW (Git Bash)
 syncFiles() {
   local s3FolderUrl
@@ -326,29 +364,22 @@ syncFiles() {
   s3FolderUrl=$1
 
   if [ "$operatingSystem" = "cygwin" -o "$operatingSystem" = "linux" ]; then
-    # aws is in a standard location such as /usr/bin/aws
-    aws s3 sync ${infoMapperDistAppFolder} ${s3FolderUrl} ${dryrun} --delete --profile "$awsProfile"
+    # aws is in a standard location such as /usr/bin/aws.
+    ${awsExe} s3 sync ${infoMapperDistAppFolder} ${s3FolderUrl} ${dryrun} --delete --profile "$awsProfile"
     errorCode=$?
     if [ $errorCode -ne 0 ]; then
       logError "Error code $errorCode from 'aws' command.  Exiting."
       exit 1
     fi
   elif [ "$operatingSystem" = "mingw" ]; then
-    # For Windows Python 3.7, aws may be installed in Windows %USERPROFILE%\AppData\Local\Programs\Python\Python37\scripts
+    # For Windows Python 3.7, aws may be installed in Windows %USERPROFILE%\AppData\Local\Programs\Python\Python37\scripts:
     # - use Linux-like path to avoid backslash issues
     # - TODO smalers 2019-01-04 could try to find if the script is in the PATH
     # - TODO smalers 2019-01-04 could try to find where py thinks Python is installed but not sure how
-    awsScript="$HOME/AppData/Local/Programs/Python/Python37/scripts/aws"
-    if [ -f "${awsScript}" ]; then
-      ${awsScript} s3 sync ${infoMapperDistAppFolder} ${s3FolderUrl} ${dryrun} --delete --profile "$awsProfile"
-      errorCode=$?
-      if [ $errorCode -ne 0 ]; then
-        logError "Error code $errorCode from 'aws' command.  Exiting."
-        exit 1
-      fi
-    else
-      logError ""
-      logError "Can't find 'aws' script"
+    ${awsExe} s3 sync ${infoMapperDistAppFolder} ${s3FolderUrl} ${dryrun} --delete --profile "$awsProfile"
+    errorCode=$?
+    if [ $errorCode -ne 0 ]; then
+      logError "Error code $errorCode from 'aws' command.  Exiting."
       exit 1
     fi
   else
@@ -384,14 +415,14 @@ uploadDist() {
   echo "InfoMapperVersion = ${infoMapperVersion}" >> ${uploadLogFile}
 
   if [ "${uploadOnlyAssets}" = "yes" ]; then
-    # Only updating assets
+    # Only updating assets:
     # - adjust the source folder and URL to be more specific
     echo "Only uploading 'assets' files."
     infoMapperDistAppFolder="${infoMapperDistAppFolder}/assets"
     s3FolderVersionUrl="${s3FolderVersionUrl}/assets"
     s3FolderLatestUrl="${s3FolderLatestUrl}/assets"
   elif [ "${uploadOnlyDataMaps}" = "yes" ]; then
-    # Only updating data-maps
+    # Only updating data-maps:
     # - adjust the source folder and URL to be more specific
     # - put this after so the most specific folder is used
     echo "Only uploading 'assets/app/data-maps' files."
@@ -400,7 +431,7 @@ uploadDist() {
     s3FolderLatestUrl="${s3FolderLatestUrl}/assets/app/data-maps"
   fi
 
-  # First upload to the version folder
+  # First upload to the version folder:
   echo "Uploading (aws sync) application ${version} version"
   echo "  from: ${infoMapperDistAppFolder}"
   echo "    to: ${s3FolderVersionUrl}"
@@ -414,7 +445,7 @@ uploadDist() {
     logInfo "...done with aws sync of ${version} copy."
   fi
 
-  # Next upload to the 'latest' folder
+  # Next upload to the 'latest' folder:
   # - TODO smalers 2020-04-20 evaluate whether to prevent 'dev' versions to be updated to 'latest'
   echo "Uploading Angular 'latest' version"
   echo "  from: ${infoMapperDistAppFolder}"
@@ -429,19 +460,23 @@ uploadDist() {
   fi
 }
 
-# Entry point into the script
+# Entry point into the script.
 
-# Check the operating system
+# Check the operating system.
 checkOperatingSystem
 
-# Make sure the Angular version is OK
+# Set the 'aws' program to use:
+# - must set after the operating system is set
+setAwsExe
+
+# Make sure the Angular version is OK.
 checkAngularVersion
 
-# Get the user login
+# Get the user login:
 # - necessary for the upload log
 getUserLogin
 
-# Get the folder where this script is located since it may have been run from any folder
+# Get the folder where this script is located since it may have been run from any folder.
 scriptFolder=$(cd $(dirname "$0") && pwd)
 # mainFolder is infomapper
 repoFolder=$(dirname ${scriptFolder})
@@ -468,7 +503,7 @@ logInfo "infoMapperMainFolder:     ${infoMapperMainFolder}"
 logInfo "infoMapperDistFolder:     ${infoMapperDistFolder}"
 logInfo "infoMapperDistAppFolder:  ${infoMapperDistAppFolder}"
 
-# S3 folder for upload
+# S3 folder for upload:
 # - put before parseCommandLine so can be used in print usage, etc.
 getVersion
 logInfo "Application version:  ${version}"
@@ -477,20 +512,20 @@ s3FolderVersionUrl="s3://rivers.openwaterfoundation.org/us/country/${version}"
 s3FolderLatestUrl="s3://rivers.openwaterfoundation.org/us/country/latest"
 
 # Parse the command line.
-# Specify AWS profile with --aws-profile
+# Specify AWS profile with --aws-profile>
 awsProfile=""
-# Default is not to do 'aws' dry run
+# Default is not to do 'aws' dry run:
 # - override with --dryrun
 dryrun=""
-# Default is to build the dist and upload
+# Default is to build the dist and upload.
 doBuild="yes"
 doUpload="yes"
-# Only update /assets
+# Only update /assets:
 # - used when updating data files and configurations
 # - should work OK but may need to refine to only upload data layers
 #   but no configuration files
 uploadOnlyAssets="no"
-# Only update /assets/app/data-maps
+# Only update /assets/app/data-maps:
 # - used when updating data layers but not the InfoMapper
 # - should work OK but may need to refine to only upload data layers
 #   but no configuration files
@@ -509,9 +544,9 @@ if [ "${doUpload}" = "yes" ]; then
   uploadDist
 fi
 
-# TODO smalers 2020-04-20 need to suggest how to run
+# TODO smalers 2020-04-20 need to suggest how to run:
 # - maybe a one-line Python http server command?
 logInfo "Run the application in folder: ${infoMapperDistAppFolder}"
 
-# If here, was successful
+# If here, was successful.
 exit 0
